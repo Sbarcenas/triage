@@ -1,28 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {Provider} from "react-redux";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import "./App.css";
+import { useDispatch } from "react-redux";
+import { _GET_CURRENT_DOCTOR } from "./redux/actions/actions";
+import Doctors from "./screens/Doctor/Doctors";
+import Hospitals from "./screens/Hospital/Hospitals";
+import Patient from "./screens/Patient/Patient";
+import Triage from "./screens/Triage/Triage";
+import Companion from "./screens/Companion/Companion";
+import { Nav, Navbar } from "react-bootstrap";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(_GET_CURRENT_DOCTOR(1));
+  }, []);
   return (
-      <Provider store={}>
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-      </Provider>
+    <Router>
+      <div>
+        <Navbar bg="light" variant="light">
+          <Navbar.Brand href="/">TriageApp</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link href="/">Doctores</Nav.Link>
+            <Nav.Link href="/hospitals">Hospitales</Nav.Link>
+            <Nav.Link href="/patient">Pacientes</Nav.Link>
+            <Nav.Link href="/triage">Triage</Nav.Link>
+            <Nav.Link href="/companion">Acompañantes</Nav.Link>
+          </Nav>
+        </Navbar>
+        <Switch>
+          <Route path="/hospitals">
+            <Hospitals />
+          </Route>
+          <Route path="/patient">
+            <Patient />
+          </Route>
+          <Route path="/triage">
+            <Triage />
+          </Route>
+          <Route path="/companion">
+            <Companion />
+          </Route>
+          <Route path="/">
+            <Doctors />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
